@@ -78,6 +78,7 @@
 
   // ---------- Tema y Chart.js ----------
   const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const FONT = '"Calibri", "Carlito", "Segoe UI", sans-serif';
   const charts = {};
   function mk(id, cfg) {
     if (charts[id]) charts[id].destroy();
@@ -88,14 +89,14 @@
     return Object.assign({
       backgroundColor: css('--tip-bg'), titleColor: css('--tip-ink'), bodyColor: css('--tip-ink'),
       borderColor: css('--line'), borderWidth: 1, padding: 10, cornerRadius: 6, displayColors: false,
-      titleFont: { family: 'Inter', weight: '600' }, bodyFont: { family: 'Inter' },
+      titleFont: { family: FONT, weight: '700' }, bodyFont: { family: FONT },
     }, extra);
   }
   function axis(extra = {}) {
     return Object.assign({
       grid: { color: css('--grid'), drawTicks: false },
       border: { color: css('--axis') },
-      ticks: { color: css('--muted'), padding: 6, font: { size: 11, family: 'Inter' } },
+      ticks: { color: css('--muted'), padding: 6, font: { size: 13, family: FONT } },
     }, extra);
   }
   const millTick = val => sign(val) + '$' + nf0.format(Math.abs(val)) + ' M';
@@ -109,7 +110,7 @@
       ctx.save();
       ctx.strokeStyle = css('--ink-2'); ctx.setLineDash([4, 4]); ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
-      ctx.setLineDash([]); ctx.fillStyle = css('--ink-2'); ctx.font = '600 11px Inter'; ctx.textAlign = 'center';
+      ctx.setLineDash([]); ctx.fillStyle = css('--ink-2'); ctx.font = '700 12px ' + FONT; ctx.textAlign = 'center';
       ctx.fillText(label, x, chartArea.top - 6);
       ctx.restore();
     },
@@ -120,7 +121,7 @@
     afterDatasetsDraw(chart) {
       const { ctx } = chart;
       ctx.save();
-      ctx.font = '600 11px Inter'; ctx.fillStyle = css('--ink-2');
+      ctx.font = '700 12px ' + FONT; ctx.fillStyle = css('--ink-2');
       chart.data.datasets.forEach((ds, di) => {
         const meta = chart.getDatasetMeta(di);
         if (meta.hidden) return;
@@ -162,7 +163,7 @@
     box.dataset.h = box.dataset.h || box.style.height;
     const narrow = box.clientWidth < 560;
     box.style.height = narrow ? (w.length * 34 + 50) + 'px' : box.dataset.h;
-    const tick = { color: css('--muted'), font: { size: 11, family: 'Inter' } };
+    const tick = { color: css('--muted'), font: { size: 12.5, family: FONT } };
     mk(id, {
       type: 'bar',
       data: { labels: w.map(s => s.label), datasets: [{ data: w.map(s => s.range), backgroundColor: colors, borderRadius: 4, borderSkipped: false, maxBarThickness: 56 }] },
@@ -177,9 +178,9 @@
           x: axis({ ticks: { ...tick, maxTicksLimit: 4, callback: millTick } }),
           y: axis({ grid: { display: false }, ticks: { ...tick, color: css('--ink-2'), autoSkip: false } }),
         } : {
-          x: axis({ grid: { display: false }, ticks: { color: css('--muted'), font: { size: 11, family: 'Inter' }, maxRotation: 0, autoSkip: false,
+          x: axis({ grid: { display: false }, ticks: { color: css('--muted'), font: { size: 12.5, family: FONT }, maxRotation: 0, autoSkip: false,
             callback(i) { const l = this.getLabelForValue(i); return l.length > 14 ? l.split(' ').reduce((a, wd) => { const last = a[a.length - 1]; if ((last + ' ' + wd).trim().length <= 14) a[a.length - 1] = (last + ' ' + wd).trim(); else a.push(wd); return a; }, ['']) : l; } } }),
-          y: axis({ ticks: { color: css('--muted'), font: { size: 11, family: 'Inter' }, callback: millTick } }),
+          y: axis({ ticks: { color: css('--muted'), font: { size: 12.5, family: FONT }, callback: millTick } }),
         },
       },
       plugins: [barLabels(num1)],
@@ -206,7 +207,7 @@
     const xUN = v25('Utilidad Neta') / v24('Utilidad Neta');
     $('hero').innerHTML = `
       <div class="hero-main">
-        <p class="eyebrow">Hallazgo principal</p>
+        <p class="kicker">Hallazgo principal</p>
         <h3>Las ventas se multiplicaron <em>${veces(xVentas)}</em>, pero la utilidad solo <em>${veces(xUN)}</em>.</h3>
         <p>En 2024 quedaban ${pesos100(IND[2024].mn)} de utilidad neta por cada $100 vendidos; en 2025, solo ${pesos100(IND[2025].mn)}.
         La empresa ganó tamaño, pero perdió margen: el costo de producción pasó de absorber el ${pct(v24('Costo de Producción (detalle)') / v24('Ventas Netas'))} al ${pct(v25('Costo de Producción (detalle)') / v25('Ventas Netas'))} de las ventas.</p>
@@ -249,13 +250,13 @@
           return [`Resultado: ${fmtInd(val, i.formato)}`, `Meta: ${metaTxt(i)}`, cumple(i, val) ? '✔ Cumple la meta' : '✖ Por mejorar'];
         } } }) },
         scales: {
-          x: axis({ min: 0, max: 150, ticks: { color: css('--muted'), font: { size: 11, family: 'Inter' }, stepSize: 25, callback: x => x + ' %' } }),
-          y: axis({ grid: { display: false }, ticks: { color: css('--ink-2'), font: { size: 12, family: 'Inter' } } }),
+          x: axis({ min: 0, max: 150, ticks: { color: css('--muted'), font: { size: 12.5, family: FONT }, stepSize: 25, callback: x => x + ' %' } }),
+          y: axis({ grid: { display: false }, ticks: { color: css('--ink-2'), font: { size: 13, family: FONT } } }),
         },
       },
       plugins: [refLine(100, 'Meta'), barLabels((val, i) => {
         const raw = avance(list[i], IND[2025][list[i].clave]);
-        return raw > 1.5 ? '>150 %' : nf0.format(raw * 100) + ' %';
+        return raw > 1.5 ? '>150 %' : (raw > 0.99 && raw < 1.01 ? nf1 : nf0).format(raw * 100) + ' %';
       })],
     });
   }
@@ -351,8 +352,8 @@
         indexAxis: 'y', responsive: true, maintainAspectRatio: false, layout: { padding: { right: 50 } },
         plugins: { legend: { display: false }, tooltip: tooltip({ callbacks: { label: c => `Creció ${veces(c.raw)} (2025 ÷ 2024)` } }) },
         scales: {
-          x: axis({ type: 'logarithmic', min: 1, ticks: { color: css('--muted'), font: { size: 11, family: 'Inter' }, callback: val => [1, 2, 5, 10, 20, 50, 100, 200, 500].includes(val) ? val + '×' : '' } }),
-          y: axis({ grid: { display: false }, ticks: { color: css('--ink-2'), font: { size: 12, family: 'Inter' } } }),
+          x: axis({ type: 'logarithmic', min: 1, ticks: { color: css('--muted'), font: { size: 12.5, family: FONT }, callback: val => [1, 2, 5, 10, 20, 50, 100, 200, 500].includes(val) ? val + '×' : '' } }),
+          y: axis({ grid: { display: false }, ticks: { color: css('--ink-2'), font: { size: 13, family: FONT } } }),
         },
       },
       plugins: [barLabels(val => veces(val))],
@@ -369,19 +370,19 @@
         responsive: true, maintainAspectRatio: false, layout: { padding: { left: 10, right: 90, top: 10 } },
         interaction: { mode: 'index', intersect: false },
         plugins: {
-          legend: { display: true, position: 'top', align: 'start', labels: { color: css('--ink-2'), boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'rectRounded', font: { family: 'Inter', size: 12 } } },
+          legend: { display: true, position: 'top', align: 'start', labels: { color: css('--ink-2'), boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'rectRounded', font: { family: FONT, size: 12 } } },
           tooltip: tooltip({ displayColors: true, callbacks: { label: c => `${c.dataset.label}: ${nf1.format(c.raw)} %` } }),
         },
         scales: {
           x: axis({ grid: { display: false }, offset: true }),
-          y: axis({ min: 0, ticks: { color: css('--muted'), font: { size: 11, family: 'Inter' }, callback: x => x + ' %' } }),
+          y: axis({ min: 0, ticks: { color: css('--muted'), font: { size: 12.5, family: FONT }, callback: x => x + ' %' } }),
         },
       },
       plugins: [{
         id: 'endLabels',
         afterDatasetsDraw(chart) {
           const { ctx } = chart;
-          ctx.save(); ctx.font = '600 12px Inter'; ctx.textBaseline = 'middle';
+          ctx.save(); ctx.font = '700 13px ' + FONT; ctx.textBaseline = 'middle';
           chart.data.datasets.forEach((ds, i) => {
             const meta = chart.getDatasetMeta(i);
             if (meta.hidden) return;
@@ -487,7 +488,7 @@
       options: {
         responsive: true, maintainAspectRatio: false, layout: { padding: { top: 22 } },
         plugins: { legend: { display: false }, tooltip: tooltip({ callbacks: { label: c => cop(fl[c.dataIndex][1]) } }) },
-        scales: { x: axis({ grid: { display: false } }), y: axis({ ticks: { color: css('--muted'), font: { size: 11, family: 'Inter' }, callback: millTick } }) },
+        scales: { x: axis({ grid: { display: false } }), y: axis({ ticks: { color: css('--muted'), font: { size: 12.5, family: FONT }, callback: millTick } }) },
       },
       plugins: [barLabels(num1)],
     });
@@ -578,8 +579,8 @@
         plugins: { legend: { display: false }, tooltip: tooltip({ callbacks: { label: c => `${c.label} ${c.dataset.label}: ${c.raw >= 0 ? '+' : ''}${nf1.format(c.raw)} M` } }) },
         scales: {
           x: axis({ stacked: false, min: -Math.ceil(Math.max(...lo.map(Math.abs), ...hi.map(Math.abs)) / 100 + 0.5) * 100, max: Math.ceil(Math.max(...lo.map(Math.abs), ...hi.map(Math.abs)) / 100 + 0.5) * 100,
-            ticks: { color: css('--muted'), font: { size: 11, family: 'Inter' }, callback: millTick } }),
-          y: axis({ stacked: true, grid: { display: false }, ticks: { color: css('--ink-2'), font: { size: 12, family: 'Inter' } } }),
+            ticks: { color: css('--muted'), font: { size: 12.5, family: FONT }, callback: millTick } }),
+          y: axis({ stacked: true, grid: { display: false }, ticks: { color: css('--ink-2'), font: { size: 13, family: FONT } } }),
         },
       },
       plugins: [barLabels(val => (val >= 0 ? '+' : '−') + nf0.format(Math.abs(val)))],
@@ -592,8 +593,8 @@
         indexAxis: 'y', responsive: true, maintainAspectRatio: false, layout: { padding: { right: 56 } },
         plugins: { legend: { display: false }, tooltip: tooltip({ callbacks: { label: c => cop(esc_[c.dataIndex].un) } }) },
         scales: {
-          x: axis({ min: Math.floor(Math.min(0, ...esc_.map(e => e.un / 1e6)) / 50 - 1) * 50, ticks: { color: css('--muted'), font: { size: 11, family: 'Inter' }, callback: millTick } }),
-          y: axis({ grid: { display: false }, ticks: { color: css('--ink-2'), font: { size: 11.5, family: 'Inter' } } }),
+          x: axis({ min: Math.floor(Math.min(0, ...esc_.map(e => e.un / 1e6)) / 50 - 1) * 50, ticks: { color: css('--muted'), font: { size: 12.5, family: FONT }, callback: millTick } }),
+          y: axis({ grid: { display: false }, ticks: { color: css('--ink-2'), font: { size: 13, family: FONT } } }),
         },
       },
       plugins: [barLabels(num1)],
@@ -732,7 +733,7 @@
 
   function init() {
     if (window.Chart) {
-      Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+      Chart.defaults.font.family = FONT;
       Chart.defaults.color = css('--muted');
     }
     segmented($('metaFilter'), d => { execFilter = d.f; applyExecFilter(); });
@@ -752,16 +753,6 @@
       all.forEach(d => { d.open = open; });
       e.target.textContent = open ? 'Cerrar todas' : 'Abrir todas';
     });
-    try { const t = localStorage.getItem('beton-theme'); if (t) document.documentElement.dataset.theme = t; } catch (_) { /* sin almacenamiento */ }
-    $('themeBtn').addEventListener('click', () => {
-      const dark = document.documentElement.dataset.theme
-        ? document.documentElement.dataset.theme === 'dark'
-        : matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.dataset.theme = dark ? 'light' : 'dark';
-      try { localStorage.setItem('beton-theme', document.documentElement.dataset.theme); } catch (_) { /* sin almacenamiento */ }
-      RENDER[current]();
-    });
-    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (!document.documentElement.dataset.theme) RENDER[current](); });
     window.addEventListener('hashchange', show);
     show();
   }
