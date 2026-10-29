@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BETON · BI Financiero</title>
+<meta name="description" content="Informe de inteligencia de negocios sobre los resultados financieros 2024-2025 de BETON INGENIEROS SAS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="hazard" aria-hidden="true"></div>
+  <div class="top-inner">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">B</div>
+      <div>
+        <p class="eyebrow">Inteligencia de negocios · Resultados financieros</p>
+        <h1>BETON INGENIEROS SAS <span>Informe BI 2024 – 2025</span></h1>
+        <p class="sub">Obras civiles, pisos industriales y pisos especiales. Análisis construido sobre los estados financieros reales de la compañía (NIIF para Pymes · cifras en COP).</p>
+      </div>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Cambiar tema claro u oscuro">◐ Tema</button>
+  </div>
+  <nav class="tabs" aria-label="Secciones del informe">
+    <a href="#ejecutivo"><b>00</b>Ejecutivo</a>
+    <a href="#resultados"><b>01</b>Resultados</a>
+    <a href="#crecimiento"><b>02</b>Crecimiento</a>
+    <a href="#balance"><b>03</b>Balance</a>
+    <a href="#caja"><b>04</b>Caja</a>
+    <a href="#simulador"><b>05</b>Sensibilidad</a>
+    <a href="#decisiones"><b>06</b>Decisiones</a>
+    <a href="#datos"><b>07</b>Base de datos</a>
+    <a href="#calidad"><b>08</b>Calidad de datos</a>
+    <a href="#diccionario"><b>09</b>Diccionario</a>
+  </nav>
+</header>
+
+<main>
+  <!-- 00 EJECUTIVO -->
+  <section id="ejecutivo" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">00</span><div><h2>Tablero ejecutivo</h2>
+      <p>Pregunta gerencial: <strong>¿El crecimiento de BETON en 2025 fue rentable, y qué rubros deben revisarse con prioridad para proteger la utilidad?</strong></p></div></div>
+    <div class="hero" id="hero"></div>
+    <div class="row-between">
+      <h3 id="metaCount"></h3>
+      <div class="seg" role="group" aria-label="Filtrar indicadores" id="metaFilter">
+        <button type="button" data-f="todos" aria-pressed="true">Todos</button>
+        <button type="button" data-f="cumple" aria-pressed="false">✔ Cumplen</button>
+        <button type="button" data-f="mejorar" aria-pressed="false">✖ Por mejorar</button>
+      </div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="card">
+      <div class="card-head"><h3>Avance frente a la meta · 2025</h3><p>100 % = meta lograda. Las metas son referencias definidas para este análisis.</p></div>
+      <div class="chart" style="height:420px"><canvas id="chMeta" role="img" aria-label="Avance de cada indicador frente a su meta"></canvas></div>
+    </div>
+  </section>
+
+  <!-- 01 RESULTADOS -->
+  <section id="resultados" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">01</span><div><h2>Estado de resultados</h2>
+      <p>De la venta a la utilidad: cuánto vendió la empresa, cuánto se fue en costos y gastos y cuánto le quedó.</p></div></div>
+    <div class="tiles" id="tilesER"></div>
+    <div class="card">
+      <div class="card-head row-between"><div><h3>Cascada de resultados</h3><p>Cifras en millones de pesos.</p></div>
+        <div class="seg" role="group" aria-label="Año" id="cascYear"><button type="button" data-y="2024" aria-pressed="false">2024</button><button type="button" data-y="2025" aria-pressed="true">2025</button></div></div>
+      <div class="chart" style="height:360px"><canvas id="chCascada" role="img" aria-label="Cascada desde ventas hasta utilidad neta"></canvas></div>
+      <div class="legend-inline"><span><i style="background:var(--total)"></i>Total / subtotal</span><span><i style="background:var(--neg)"></i>Resta (costo o gasto)</span></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>¿A dónde se van cada $100 vendidos?</h3><p>Cada cuadro equivale a $1 de cada $100 de ventas netas.</p></div>
+      <div class="waffles">
+        <figure><figcaption>2024</figcaption><div class="waffle" id="waffle2024"></div><p class="waffle-note" id="wn2024"></p></figure>
+        <figure><figcaption>2025</figcaption><div class="waffle" id="waffle2025"></div><p class="waffle-note" id="wn2025"></p></figure>
+      </div>
+      <div class="legend" id="waffleLegend"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Análisis vertical y horizontal</h3><p>Vertical: % sobre ventas netas. Horizontal: variación 2025 frente a 2024.</p></div>
+      <div class="table-wrap"><table class="tbl" id="tblER"></table></div>
+    </div>
+  </section>
+
+  <!-- 02 CRECIMIENTO -->
+  <section id="crecimiento" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">02</span><div><h2>Crecimiento vs. rentabilidad</h2>
+      <p>La empresa se multiplicó, pero los costos crecieron más rápido que las ventas: el llamado efecto tijera.</p></div></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>¿Cuántas veces creció cada rubro?</h3><p>Valor 2025 ÷ valor 2024 (escala logarítmica).</p></div>
+        <div class="chart" style="height:400px"><canvas id="chVeces" role="img" aria-label="Multiplicador de crecimiento por rubro"></canvas></div>
+        <div class="legend-inline"><span><i style="background:var(--total)"></i>Ventas netas (referencia)</span><span><i style="background:var(--neg)"></i>Creció más rápido que las ventas</span><span><i style="background:var(--pos)"></i>Creció más lento que las ventas</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Márgenes: de 2024 a 2025</h3><p>Pesos que quedan de cada $100 vendidos en cada nivel del estado de resultados.</p></div>
+        <div class="chart" style="height:400px"><canvas id="chMargenes" role="img" aria-label="Evolución de márgenes bruto, operacional y neto"></canvas></div>
+      </div>
+    </div>
+    <div class="insights" id="insCrec"></div>
+  </section>
+
+  <!-- 03 BALANCE -->
+  <section id="balance" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">03</span><div><h2>Balance y liquidez</h2>
+      <p>En qué tiene invertido su dinero la empresa y quién lo financia.</p></div></div>
+    <div class="row-between"><h3 id="balTitle"></h3>
+      <div class="seg" role="group" aria-label="Año" id="balYear"><button type="button" data-y="2024" aria-pressed="false">2024</button><button type="button" data-y="2025" aria-pressed="true">2025</button></div></div>
+    <div class="card">
+      <div class="strip-block"><p class="strip-label">¿En qué está el activo?</p><div class="strip" id="stripActivo"></div><div class="legend" id="legActivo"></div></div>
+      <div class="strip-block"><p class="strip-label">¿Quién lo financia?</p><div class="strip" id="stripFin"></div><div class="legend" id="legFin"></div></div>
+    </div>
+    <div class="kpis kpis-sm" id="ratios"></div>
+    <div class="insights" id="insBal"></div>
+  </section>
+
+  <!-- 04 CAJA -->
+  <section id="caja" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">04</span><div><h2>Utilidad no es caja</h2>
+      <p>En 2025 la empresa ganó dinero en el papel, pero su operación consumió efectivo. Este puente explica por qué.</p></div></div>
+    <div class="card">
+      <div class="card-head"><h3>Puente: de la utilidad neta al flujo de caja operativo · 2025</h3><p>Cifras en millones de pesos, según el estado de flujos de efectivo (método indirecto).</p></div>
+      <div class="chart" style="height:380px"><canvas id="chPuente" role="img" aria-label="Puente desde utilidad neta hasta flujo operativo"></canvas></div>
+      <div class="legend-inline"><span><i style="background:var(--total)"></i>Total</span><span><i style="background:var(--pos)"></i>Suma caja</span><span><i style="background:var(--neg)"></i>Consume caja</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Flujos por actividad · 2025</h3><p>Millones de pesos.</p></div>
+        <div class="chart" style="height:260px"><canvas id="chFlujos" role="img" aria-label="Flujos de operación, inversión y financiación"></canvas></div>
+      </div>
+      <div class="insights one" id="insCaja"></div>
+    </div>
+  </section>
+
+  <!-- 05 SIMULADOR -->
+  <section id="simulador" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">05</span><div><h2>Análisis de sensibilidad</h2>
+      <p>Mueva las variables y observe qué pasa con la utilidad de 2025. El costo de ventas se comporta como variable (se mueve con el volumen de obra); los gastos operacionales, como fijos.</p></div></div>
+    <div class="presets" id="presets"></div>
+    <div class="sim">
+      <div class="card sim-controls" id="simControls"></div>
+      <div class="sim-out">
+        <div class="card sim-hero" id="simHero"></div>
+        <div class="kpis kpis-sm" id="simKpis"></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h3>¿Qué variable pesa más? (±10 %)</h3><p>Cambio en la utilidad neta, en millones, si cada variable se mueve 10 %.</p></div>
+        <div class="chart" style="height:280px"><canvas id="chTornado" role="img" aria-label="Sensibilidad de la utilidad neta a cada variable"></canvas></div>
+        <div class="legend-inline"><span><i style="background:var(--pos)"></i>Aumenta la utilidad</span><span><i style="background:var(--neg)"></i>Reduce la utilidad</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Utilidad neta por escenario</h3><p>Millones de pesos.</p></div>
+        <div class="chart" style="height:280px"><canvas id="chEsc" role="img" aria-label="Utilidad neta en cada escenario predefinido"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 DECISIONES -->
+  <section id="decisiones" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">06</span><div><h2>Del dato a la decisión</h2>
+      <p>Respuestas a las preguntas gerenciales, recomendaciones conectadas con las cifras y reflexión final.</p></div></div>
+    <div class="qa" id="qa"></div>
+    <h3 class="block-title">Recomendaciones gerenciales</h3>
+    <div class="recs" id="recs"></div>
+    <div class="card reflex">
+      <h3>Reflexión final</h3>
+      <p id="reflexion">Construir esta base de datos nos mostró que la información financiera existe en casi todas las empresas, pero casi nunca está organizada para decidir: estaba en un PDF pensado para cumplir con la norma, no para analizar. La mayor dificultad fue convertir unos estados financieros anuales en registros comparables (rubro por año) y, sobre todo, descubrir que los tres estados no siempre cuadran entre sí; sin esa conciliación, cualquier conclusión habría sido frágil. Los datos cambiaron la lectura del negocio: a simple vista, 2025 fue un año de éxito porque las ventas se multiplicaron por 13, pero el análisis muestra que el margen neto cayó de $29 a menos de $4 por cada $100 vendidos y que un alza del 8 % en los costos borraría la utilidad. Esa es la diferencia entre decidir por intuición y decidir con datos. Para las pymes colombianas, que suelen operar con márgenes estrechos y poca caja, la inteligencia de negocios no es un lujo: es la forma de anticipar los problemas antes de que lleguen al flujo de efectivo. Con más datos (ventas por obra, cliente y mes) y una herramienta como Power BI, conectaríamos la contabilidad en tiempo real, mediríamos la rentabilidad de cada contrato y automatizaríamos alertas cuando un costo se desvíe del presupuesto.</p>
+    </div>
+  </section>
+
+  <!-- 07 DATOS -->
+  <section id="datos" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">07</span><div><h2>Base de datos</h2>
+      <p id="datosResumen"></p></div></div>
+    <div class="card method">
+      <h3>Cómo se construyó la base</h3>
+      <p><strong>Origen y tipo de datos.</strong> Los datos son <strong>reales</strong> (opción A): provienen de los estados financieros de BETON INGENIEROS SAS con corte a 31 de diciembre de 2024 y 2025, preparados bajo NIIF para Pymes (grupo 2). Se transcribieron del PDF oficial el estado de situación financiera, el estado de resultados integrales, el estado de flujos de efectivo y las notas.</p>
+      <p><strong>Criterios para definir las variables.</strong> Como la empresa reporta una sola línea de negocio ("construcción de edificios y obra") y cifras anuales, la unidad de análisis no puede ser el producto: es el <strong>rubro contable por año</strong>. Cada registro tiene año, estado financiero, grupo, rubro, nota, naturaleza (ingreso, costo, gasto, activo, pasivo, patrimonio o flujo), tipo de registro (reportado, subtotal o detalle de nota), valor en pesos y página de origen. A partir de ellas se calculan el análisis vertical, la variación absoluta y la relativa. Las columnas de la estructura mínima de la actividad se adaptaron así: ingreso total = ventas netas + ingresos no operacionales; costo total = costo de ventas + gastos + gastos no operacionales + impuestos; margen = ingreso total − costo total.</p>
+      <p><strong>Cuidados de coherencia.</strong> Se verificó cada subtotal (utilidad bruta, operacional, antes de impuestos y neta; activo = pasivo + patrimonio) y se conciliaron los tres estados entre sí. Los desgloses de nota se marcaron aparte para no sumarlos dos veces. Las diferencias encontradas se documentan en la sección <a href="#calidad">08 · Calidad de datos</a>.</p>
+      <p><strong>Limitaciones.</strong> Solo hay dos cortes anuales, no hay datos por obra, cliente, mes o canal, ni cantidades o precios unitarios: la sensibilidad se modela con variaciones porcentuales. La utilidad 2024 difiere entre estados ($86,3 M frente a $11,5 M) y el flujo de efectivo 2025 no concilia, lo que limita las comparaciones entre años.</p>
+    </div>
+    <div class="filters">
+      <label>Año <select id="fAnio"><option value="">Todos</option><option>2024</option><option>2025</option></select></label>
+      <label>Estado <select id="fEstado"><option value="">Todos</option></select></label>
+      <label>Tipo <select id="fTipo"><option value="">Todos</option></select></label>
+      <label class="grow">Buscar <input id="fBuscar" type="search" placeholder="Rubro o grupo…"></label>
+      <button type="button" class="btn" id="btnCSV">⬇ Descargar CSV</button>
+    </div>
+    <p class="count" id="fCount"></p>
+    <div class="table-wrap tall"><table class="tbl" id="tblBase"></table></div>
+  </section>
+
+  <!-- 08 CALIDAD -->
+  <section id="calidad" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">08</span><div><h2>Calidad de datos</h2>
+      <p>Al conciliar los estados financieros entre sí aparecieron diferencias. No invalidan el análisis, pero conviene validarlas con contabilidad antes de tomar decisiones.</p></div></div>
+    <div class="seg" role="group" aria-label="Filtrar por prioridad" id="qFilter">
+      <button type="button" data-f="" aria-pressed="true">Todas</button><button type="button" data-f="Alta" aria-pressed="false">Alta</button><button type="button" data-f="Media" aria-pressed="false">Media</button><button type="button" data-f="Baja" aria-pressed="false">Baja</button>
+    </div>
+    <div class="quality" id="quality"></div>
+  </section>
+
+  <!-- 09 DICCIONARIO -->
+  <section id="diccionario" class="page" hidden>
+    <div class="sec-head"><span class="sec-num">09</span><div><h2>Diccionario de indicadores</h2>
+      <p>Qué mide cada indicador, cómo se calcula, su meta de referencia y quién responde por él. El resultado se calcula en vivo desde la base.</p></div></div>
+    <button type="button" class="btn" id="openAll">Abrir todas</button>
+    <div class="dict" id="dict"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Fuente: estados financieros de BETON INGENIEROS SAS 2024–2025 (NIIF para Pymes). Metas de referencia definidas para este análisis académico; no son metas oficiales de la empresa. Actividad de inteligencia de negocios.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="data/beton_data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
